@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import axios from 'axios';
 import { fileURLToPath } from 'url';
+import { Analytics } from "@vercel/analytics/react"
 
 const app = express();
 const PORT = process.env.PORT || 9853;
