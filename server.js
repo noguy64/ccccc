@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 9853;
 // Bare Server
 const bareServerProcess = spawn(
     'npx',
-    ['--yes', '@tomphttp/bare-server-node', '--port', '8080', '--host', 'localhost'],
+    ['--yes', '@tomphttp/bare-server-node', '--port', '8080', '--host', '0.0.0.0'],
     {
         stdio: 'inherit',
         shell: true
