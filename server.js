@@ -4,6 +4,7 @@ import axios from 'axios';
 import { fileURLToPath } from 'url';
 import { Analytics } from "@vercel/analytics/react";
 import { spawn } from 'child_process';
+import { createProxyMiddleware } from 'http-proxy-middleware';
 
 const app = express();
 const PORT = process.env.PORT || 9853;
@@ -16,6 +17,12 @@ const bareServerProcess = spawn(
         shell: true
     }
 );
+
+app.use('/bare/', createProxyMiddleware({
+    target: 'http://localhost:8080',
+    changeOrigin: true,
+    pathRewrite: { '^/bare/': '/' }
+}));
 
 // Static files setup
 const __filename = fileURLToPath(import.meta.url);
