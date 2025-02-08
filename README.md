@@ -1,2 +1,2 @@
 # Glider
-random ass proxy
+why did you tell me to change desc lil homie
