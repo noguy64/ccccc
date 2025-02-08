@@ -18,6 +18,13 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+app.get('/games', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'games.html'));
+});
+
+app.get('/settings', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'settings.html'));
+});
 app.get('/g', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'g.html'));
 });

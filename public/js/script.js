@@ -1,117 +1,185 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const galaxy = document.getElementById('galaxy');
-    const starsContainer = document.getElementById('stars');
-    const numStars = 100;
-    let starsVisible = true;
-    let meteorVisible = true; // Add state to track meteor visibility
+// Variables to store selected settings before saving
+const defaultColorTheme = '#1e90ff'; // Default to blue
+let selectedColorTheme = defaultColorTheme; // Initialize with default
+let selectedFavicon = 'default'; // Default favicon
 
-    // Create stars
-    for (let i = 0; i < numStars; i++) {
-        const star = document.createElement('div');
-        star.className = 'star';
-        const size = Math.random() * 3;
-        const left = Math.random() * 100 + '%';
-        const top = Math.random() * 100 + '%';
-        star.style.width = size + 'px';
-        star.style.height = size + 'px';
-        star.style.left = left;
-        star.style.top = top;
-        starsContainer.appendChild(star);
-    }
-
-    // Add parallax effect
-    window.addEventListener('mousemove', function(event) {
-        const mouseX = event.clientX;
-        const mouseY = event.clientY;
-        const galaxyWidth = galaxy.offsetWidth;
-        const galaxyHeight = galaxy.offsetHeight;
-
-        const moveX = (mouseX / galaxyWidth) * 50 - 25;
-        const moveY = (mouseY / galaxyHeight) * 50 - 25;
-
-        galaxy.style.transform = `translate(-${moveX}%, -${moveY}%)`;
-    });
-    
-
-    let trailIntervalID; // Variable to store the interval ID for trail generation
-
-    
-    function startTrailInterval(meteor) {
-        if (!trailIntervalID) {
-            trailIntervalID = setInterval(() => createTrail(meteor), 100);
-        }
-    }
-    
-    function stopTrailInterval() {
-        if (trailIntervalID) {
-            clearInterval(trailIntervalID);
-            trailIntervalID = null;
-        }
-    }
-    
-    function toggleEffects() {
-        const stars = document.querySelectorAll('.star');
-        const meteor = document.getElementById('meteor'); // Select the meteor element
-    
-        // Toggle stars' visibility
-        stars.forEach(star => {
-            star.style.display = starsVisible ? 'none' : 'block';
-        });
-        starsVisible = !starsVisible; // Toggle stars' visibility state
-    
-        // Toggle meteor visibility
-        if (meteorVisible) {
-            meteor.style.display = 'none'; // Hide meteor
-            stopTrailInterval(); // Stop trail generation when meteor is visible
+// Function to switch between screens
+function showScreen(screenId) {
+    const screens = document.querySelectorAll('.screen');
+    screens.forEach(screen => {
+        if (screen.id === screenId) {
+            screen.classList.add('active');
         } else {
-            meteor.style.display = 'block'; // Show meteor
-            startTrailInterval(meteor); // Start trail generation when meteor is hidden
+            screen.classList.remove('active');
         }
-        meteorVisible = !meteorVisible; // Toggle meteor visibility state
+    });
+    // Smooth scroll to top
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
+// Function to highlight active navigation link
+function setActiveNav(navId) {
+    const navLinks = document.querySelectorAll('.menu-options a');
+    navLinks.forEach(link => {
+        link.classList.remove('active-nav');
+    });
+    document.getElementById(navId).classList.add('active-nav');
+}
+
+// Function to preview color theme
+function previewColorTheme(colorValue) {
+    const root = document.documentElement;
+    root.style.setProperty('--primary-color', colorValue);
+    root.style.setProperty('--nav-hover-color', colorValue);
+    selectedColorTheme = colorValue; // Update the selected value
+}
+
+// Function to preview favicon
+function previewFavicon(iconName) {
+    const favicon = document.getElementById('favicon');
+    const favicons = {
+        'default': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAE0lEQVQoU2O0tLSU1LhUBgA+TABN2s8KzAAAAABJRU5ErkJggg==',
+        'school': 'data:image/png;base64,...',   // Replace with actual Base64 data
+        'work': 'data:image/png;base64,...',     // Replace with actual Base64 data
+        'project': 'data:image/png;base64,...',  // Replace with actual Base64 data
+        'news': 'data:image/png;base64,...',     // Replace with actual Base64 data
+        'calculator': 'data:image/png;base64,...'// Replace with actual Base64 data
+    };
+    const titles = {
+        'default': 'Glider',
+        'school': 'School Portal',
+        'work': 'Work Dashboard',
+        'project': 'Project Manager',
+        'news': 'News',
+        'calculator': 'Calculator'
+    };
+    favicon.href = favicons[iconName];
+    document.title = titles[iconName];
+    selectedFavicon = iconName; // Update the selected value
+}
+
+// Function to save settings
+function saveSettings() {
+    // Save color theme
+    localStorage.setItem('gliderColorTheme', selectedColorTheme);
+    // Save favicon
+    localStorage.setItem('gliderFavicon', selectedFavicon);
+
+    // Show toast notification
+    showToast();
+}
+
+// Function to display toast notification
+function showToast() {
+    const toast = document.getElementById('toast');
+    toast.className = 'toast show';
+    setTimeout(function () {
+        toast.className = toast.className.replace('show', '');
+    }, 3000);
+}
+
+// Function to perform search
+function performSearch() {
+    const query = document.getElementById('search-input').value.trim();
+    if (query.includes('.')) {
+        window.location.href = 'http://' + query;
+    } else {
+        window.location.href = 'https://www.google.com/search?q=' + encodeURIComponent(query);
     }
-    
-    document.getElementById('toggle-button').onclick = toggleEffects; // Attach function to button onclick
-    
+    return false; // Prevent form submission
+}
 
-    // Add event listener to the button
-    document.getElementById('toggle-button').addEventListener('click', toggleeffects);
+// Function to open Glider in about:blank
+function openGliderInAboutBlank() {
+    const gliderContent = document.documentElement.outerHTML;
+    const newWindow = window.open('about:blank', '_blank');
+    newWindow.document.open();
+    newWindow.document.write(gliderContent);
+    newWindow.document.close();
+}
 
-    // Function to handle search
-    function handleSearch(event) {
-        if (event.key === 'Enter') {
-            const searchBox = document.getElementById('search-box');
-            const query = searchBox.value.trim();
-            if (query !== '') {
-                const url = `https://www.google.com/search?q=${encodeURIComponent(query)}`; // Example search URL
-                window.location.href = url; // Open in the same tab
-            }
-        }
+// Page Cloaker Function
+function cloakPage() {
+    // Change the page title and icon to disguise the page
+    document.title = "Educational Resource";
+    previewFavicon('school');
+    // Optionally, redirect to an educational website
+    // window.location.href = "https://www.khanacademy.org";
+}
+
+// Event listener for the Cloak Page action
+document.addEventListener('keydown', function(e) {
+    // Press 'C' to trigger the cloaker
+    if (e.key.toLowerCase() === 'c') {
+        cloakPage();
     }
-
-    // Event listener for search box
-    document.getElementById('search-box').addEventListener('keypress', handleSearch);
 });
 
-window.addEventListener("load", function() {
-    const meteor = document.getElementById("meteor");
+// Load settings on page load
+document.addEventListener('DOMContentLoaded', () => {
+    // Apply the default blue theme on first load
+    previewColorTheme(defaultColorTheme);
+    document.getElementById('color-select').value = defaultColorTheme;
 
-    setInterval(() => {
-        createTrail(meteor);
-    }, 100); // Slowed down the interval for better visualization
-
-    function createTrail(meteor) {
-        const trail = document.createElement("div");
-        trail.classList.add("trail");
-
-        // Randomize the starting position
-        const randomDirection = Math.random() * 360;
-        trail.style.left = `${meteor.offsetLeft + meteor.offsetWidth / 2 + Math.cos(randomDirection) * 50}px`;
-        trail.style.top = `${meteor.offsetTop + meteor.offsetHeight / 2 + Math.sin(randomDirection) * 50}px`;
-
-        document.body.appendChild(trail);
-
-        setTimeout(() => {
-            trail.remove();
-        }, 995);
+    // Check if a saved color theme exists
+    if (localStorage.getItem('gliderColorTheme')) {
+        selectedColorTheme = localStorage.getItem('gliderColorTheme');
+        // Apply the saved color theme
+        previewColorTheme(selectedColorTheme);
+        document.getElementById('color-select').value = selectedColorTheme;
     }
+
+    // Check if a saved favicon exists
+    if (localStorage.getItem('gliderFavicon')) {
+        selectedFavicon = localStorage.getItem('gliderFavicon');
+        // Apply the saved favicon
+        previewFavicon(selectedFavicon);
+        document.getElementById('favicon-select').value = selectedFavicon;
+    }
+
+    // Set up event listeners for settings changes
+    document.getElementById('color-select').addEventListener('change', function() {
+        previewColorTheme(this.value);
+    });
+
+    document.getElementById('favicon-select').addEventListener('change', function() {
+        previewFavicon(this.value);
+    });
+
+    // Set the active navigation link to 'Home' on page load
+    setActiveNav('nav-home');
+
+    // Update footer year
+    document.getElementById('footer-year').textContent = new Date().getFullYear();
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    var sidebar = document.createElement('div');
+    var search = document.createElement('div');
+    sidebar.innerHTML = `
+    <nav class="menu-container">
+        <span class="menu-title" onclick="showScreen('home-screen'); setActiveNav('nav-home')">
+            <i class="fas fa-paper-plane"></i> Glider
+        </span>
+        <div class="menu-options">
+            <a href="/" id="nav-home" setActiveNav('nav-home')" aria-label="Home">
+                <i class="fas fa-home"></i> Home
+            </a>
+            <a id="nav-apps" onclick="showScreen('apps-screen'); setActiveNav('nav-apps')" aria-label="Apps">
+                <i class="fas fa-th"></i> Apps
+            </a>
+            <a id="nav-games" onclick="showScreen('games-screen'); setActiveNav('nav-games')" aria-label="Games">
+                <i class="fas fa-gamepad"></i> Games
+            </a>
+            <a id="nav-settings" onclick="showScreen('settings-screen'); setActiveNav('nav-settings')" aria-label="Settings">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+        </div>
+    </nav>
+    `;
+    document.body.appendChild(sidebar);
+    document.body.appendChild(search);
 });

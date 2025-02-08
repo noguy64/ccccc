@@ -2,37 +2,103 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Glide</title>
+    <title>Glider</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <link id="favicon" rel="icon" type="image/png" href="">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="menu-container">
-        <span class="menu-title">Glider</span>
-                <div class="menu-options">
-                            <a href="#">Apps</a>
-                                        <a href="#">Games</a>
-                                                    <a href="#">Settings</a>
-                                                            </div>
-                                                                </div>
-    <div id="particles-js" style="z-index: -3;"></div>
-    <div id="heading">Glide</div>
-    <div id="meteor" class="trail"></div>
-    <center><form id="uv-form">
-        <input id="uv-search-engine" value="https://www.google.com/search?q=%s" type="hidden"> 
-        <input id="uv-address" type="text" placeholder="Search Google or type an URL" class="form__input" style="z-index: 3;">
-      </form></center>
-    <div id="footer">Glide 2025. All Rights Reserved.</div>
-    <button id="toggle-button">Toggle Effects</button>
 
-    <script src="js/app.js"></script>
+    <section id="home-screen" class="screen active">
+        <div class="search-container">
+            <h1 class="title">Glider</h1>
+            <center><form id="uv-form">
+                <input id="uv-search-engine" value="https://www.google.com/search?q=%s" type="hidden"> 
+                <input id="uv-address" type="text" placeholder="Search Google or type an URL" class="form__input" style="z-index: 3;">
+              </form></center>
+        </div>
+    </section>
+
+    <section id="apps-screen" class="screen">
+        <div class="section-container">
+            <h2>Apps</h2>
+            <div class="card-grid">
+                <div class="card"></div>
+                <div class="card"></div>
+                <div class="card"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="games-screen" class="screen">
+    <div class="section-container">
+        <h2>Games</h2>
+        <div class="card-grid">
+            <a href="/play.html?game=crazygames"><div class="card"><img src="https://imgs.crazygames.com/crazygames/share.png?metadata=none&quality=40&width=1200&height=630&fit=crop" alt=""></div></a>
+            <a href=""><div class="card"></div></a>
+            <a href=""><div class="card"></div></a>
+        </div>
+    </div>
+</section>
+
+    <section id="settings-screen" class="screen">
+        <div class="section-container">
+            <h2>Settings</h2>
+            <div class="settings-box">
+                <h3>Appearance</h3>
+                <label for="color-select">Choose Color Theme:</label>
+                <select id="color-select">
+                    <option value="#1e90ff">Blue</option>
+                    <option value="#ff4757">Red</option>
+                    <option value="#2ed573">Green</option>
+                    <option value="#ffa502">Orange</option>
+                    <option value="#1e272e">Dark Gray</option>
+                    <option value="#3742fa">Indigo</option>
+                    <option value="#ff7f50">Coral</option>
+                    <option value="#70a1ff">Sky Blue</option>
+                    <option value="#a4b0be">Light Gray</option>
+                    <option value="#7bed9f">Mint Green</option>
+                </select>
+            </div>
+            <div class="settings-box">
+                <h3>Tab Cloaker</h3>
+                <label for="favicon-select">Choose Tab Icon:</label>
+                <select id="favicon-select">
+                    <option value="default">Default</option>
+                    <option value="school">School Portal</option>
+                    <option value="work">Work Dashboard</option>
+                    <option value="project">Project Manager</option>
+                    <option value="news">News Site</option>
+                    <option value="calculator">Calculator</option>
+                </select>
+            </div>
+            <div class="settings-box">
+                <h3>about:blank</h3>
+                <button onclick="openGliderInAboutBlank()" aria-label="Open Glider">
+                    <i class="fas fa-external-link-alt"></i> Open Glider
+                </button>
+            </div>
+            <div class="settings-box">
+                <button id="save-settings-button" onclick="saveSettings()" aria-label="Save Settings">
+                    <i class="fas fa-save"></i> Save Settings
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <div id="toast" class="toast">Settings have been saved!</div>
+
+    <footer class="footer">
+        © <span id="footer-year"></span> Glider. All rights reserved.
+    </footer>
+
     <script src="js/script.js"></script>
-    <script src="/vn/uv.bundle.js" defer=""></script>
-    <script src="/vn/uv.config.js" defer=""></script>
-    <script src="/vn/register-sw.js" defer=""></script>
-    <script src="/vn/search.js" defer=""></script>
-    <script src="/vn/index.js" defer=""></script>
-    
+    <script src="static/uv/uv.bundle.js" defer=""></script>
+    <script src="static/uv/uv.config.js" defer=""></script>
+    <script src="static/register-sw.js" defer=""></script>
+    <script src="static/search.js" defer=""></script>
+    <script src="static/index.js" defer=""></script>
 </body>
 </html>
+
