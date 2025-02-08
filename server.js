@@ -7,6 +7,22 @@ import { Analytics } from "@vercel/analytics/react"
 const app = express();
 const PORT = process.env.PORT || 9853;
 
+// Bare Server
+const bareServerProcess = spawn(
+  'npx',
+  ['--yes', '@tomphttp/bare-server-node', '--port', '8080', '--host', 'localhost'],
+  {
+      stdio: 'inherit',
+      shell: true
+  }
+);
+
+app.use('/bare/', createProxyMiddleware({
+  target: 'http://localhost:8080',
+  changeOrigin: true,
+  pathRewrite: { '^/bare/': '/' }
+}));
+
 // Static files setup
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
