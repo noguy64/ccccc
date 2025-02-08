@@ -1,6 +1,6 @@
 self.__uv$config = {
     prefix: '/vn/ontop/',
-    bare:'http://localhost:8080',
+    bare:'/bare/',
     encodeUrl: Ultraviolet.codec.xor.encode,
     decodeUrl: Ultraviolet.codec.xor.decode,
     handler: '/vn/uv.handler.js',
