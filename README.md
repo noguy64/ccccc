@@ -1,2 +1,4 @@
 # Glider
-why did you tell me to change desc lil homie
+use this as an everyday proxy, updates a lil frequent
+
+-RAX
