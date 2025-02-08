@@ -2,7 +2,9 @@ import express from 'express';
 import path from 'path';
 import axios from 'axios';
 import { fileURLToPath } from 'url';
-import { Analytics } from "@vercel/analytics/react"
+import { spawn } from 'child_process';
+import { createProxyMiddleware } from 'http-proxy-middleware'
+
 
 const app = express();
 const PORT = process.env.PORT || 9853;
