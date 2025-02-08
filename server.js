@@ -2,10 +2,20 @@ import express from 'express';
 import path from 'path';
 import axios from 'axios';
 import { fileURLToPath } from 'url';
-import { Analytics } from "@vercel/analytics/react"
+import { Analytics } from "@vercel/analytics/react";
+import { spawn } from 'child_process';
 
 const app = express();
 const PORT = process.env.PORT || 9853;
+// Bare Server
+const bareServerProcess = spawn(
+    'npx',
+    ['--yes', '@tomphttp/bare-server-node', '--port', '8080', '--host', 'localhost'],
+    {
+        stdio: 'inherit',
+        shell: true
+    }
+);
 
 // Static files setup
 const __filename = fileURLToPath(import.meta.url);
